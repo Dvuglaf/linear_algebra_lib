@@ -732,5 +732,20 @@ void new_cycle() {
 
 int main()
 {
+	/*
+		TODO: СДЕЛАТЬ ОБЩИЙ ДЛЯ complex, vector, linear::matrix НУЛЕВОЙ ЭЛЕМЕНТ!!!!!!и заменить в строке e.push(0);
+		TODO: { v = vector(1)
+				c = complex(v) - exception!
+			  }
+	*/
+	//to create vector: variable_name = vector(values with delimiter ' ')
+	//example: vec = vector(1 3.14 2 9)
+	//or variable_name = vector(start_value, stop_value, step)
+	//example: vec = vector(1.1, 2, 0.2)
+	//vec = (1.1, 1.3, 1.5, 1.7, 1.9)
 
+	//to create complex: variable_name = complex(real_part, imaginary_part)
+	//example: c = complex(100, 3.2)
+	new_cycle();
+	return 0;
 }

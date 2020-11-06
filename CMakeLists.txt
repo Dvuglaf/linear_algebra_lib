@@ -16,6 +16,6 @@ endif()
 
 
 # Добавьте источник в исполняемый файл этого проекта.
-add_executable (linear "linear.cpp" "linear.h" "matrix.h" "matrix.cpp" "var.h" "complex.h" "complex.cpp" "vector.h" "vector.cpp")
+add_executable (linear "linear.cpp" "linear.h" "matrix.h" "matrix.cpp" "complex.h" "complex.cpp" "vector.h" "vector.cpp")
 
 # TODO: Добавьте тесты и целевые объекты, если это необходимо.
