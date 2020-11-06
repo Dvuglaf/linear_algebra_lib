@@ -1,0 +1,3 @@
+C:/Users/Alzeen/source/repos/linear/linear/out/build/x64-Debug (по умолчанию)/CMakeFiles/edit_cache.dir
+C:/Users/Alzeen/source/repos/linear/linear/out/build/x64-Debug (по умолчанию)/CMakeFiles/linear.dir
+C:/Users/Alzeen/source/repos/linear/linear/out/build/x64-Debug (по умолчанию)/CMakeFiles/rebuild_cache.dir
