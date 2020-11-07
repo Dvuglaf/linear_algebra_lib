@@ -52,15 +52,6 @@ std::vector<std::string> split(const std::string& string, const std::string& del
 	return tokens;
 }
 
-void delete_space_before_symbol(std::string& string, const char symbol) {
-	const auto symbol_position = string.find(symbol);
-	if (symbol_position != std::string::npos) {
-		for (size_t i = 0; i < symbol_position; ++i) {
-			if (string[i] == ' ') 
-				string.erase(i, 1);
-		}
-	}
-}
 
 inline bool exist_name_in_map(const std::string& name) {
 	return (map.find(name) == map.end()) ? false : true;
@@ -309,7 +300,7 @@ std::variant<linear::complex, linear::vector, linear::matrix, long double> zamel
 				prev = symbol;
 				symbol = expression[i];
 			}
-			if (symbol != '+' && symbol != '-' && symbol != '*' && symbol != '/' && symbol != ')')
+			if (symbol != '+' && symbol != '-' && symbol != '*' && symbol != '/' && symbol != ')' && symbol != ' ')
 				throw std::string("Error: incorrect expression!");
 			
 			if (!exist_name_in_map(name))
@@ -500,7 +491,7 @@ void check_error(const std::string& user_enter) {
 	std::string expression = user_enter;
 	if (equality_count == 1) {//оператор равно.
 		expression = vector[1];
-		if (!valid_name(vector[0] = replace_in_string(vector[0], std::regex('(' + vector[0] + ")+"), "")))
+		if (!valid_name(vector[0] = std::regex_replace(vector[0], std::regex("\s+\s(?!\s)"), "")))//поменять логику
 			throw std::string("Error: incorrect name!");
 	}
 	else {
@@ -573,7 +564,7 @@ linear::vector vector_help(const std::string& expression) {
 				vector.push_back(std::get<long double>(map[str]));
 			}
 			else {
-				throw;
+				throw std::string();
 			}
 		}
 	}
@@ -617,25 +608,30 @@ std::variant < linear::complex, linear::vector, linear::matrix, long double> exe
 	if (function) {
 		expression.erase(expression.find('('), 1);
 		expression.erase(expression.find_last_of(')'), 1);
-		expression = replace_in_string(expression, std::regex('(' + function_name + ')' + '+'), "");
+		expression = std::regex_replace(expression, std::regex('(' + function_name + ')' + '+'), "");
 
 		if (create_complex_function(function_name)) {
 			auto vector = split(expression, ",");
 			std::string left = vector[0], right = "none";
 			linear::complex z;
-			if (function_name == "pow") {
-				right = vector[1];
-				auto vec = split(expression, ",");
-				long double pow = std::get<long double>(zamelsonand_bauer(left));
-				z = std::get<linear::complex>(zamelsonand_bauer(right));
-				return linear::pow(pow, z);
-			}
-			if (function_name == "complex") {
-				right = vector[1];
-				z.real(std::get<long double>(zamelsonand_bauer(left)));
-				z.imag(std::get<long double>(zamelsonand_bauer(right)));
-				return z;
+			try {
+				if (function_name == "pow") {
+					right = vector[1];
+					auto vec = split(expression, ",");
+					long double pow = std::get<long double>(zamelsonand_bauer(left));
+					z = std::get<linear::complex>(zamelsonand_bauer(right));
+					return linear::pow(pow, z);
+				}
+				if (function_name == "complex") {
+					right = vector[1];
+					z.real(std::get<long double>(zamelsonand_bauer(left)));
+					z.imag(std::get<long double>(zamelsonand_bauer(right)));
+					return z;
 
+				}
+			}
+			catch (...) {
+				throw std::string("Error: invalid expression!");
 			}
 			if (right != "none") {
 				throw std::string("Error: too many parameters in function!");
@@ -734,9 +730,7 @@ int main()
 {
 	/*
 		TODO: СДЕЛАТЬ ОБЩИЙ ДЛЯ complex, vector, linear::matrix НУЛЕВОЙ ЭЛЕМЕНТ!!!!!!и заменить в строке e.push(0);
-		TODO: { v = vector(1)
-				c = complex(v) - exception!
-			  }
+	
 	*/
 	//to create vector: variable_name = vector(values with delimiter ' ')
 	//example: vec = vector(1 3.14 2 9)
