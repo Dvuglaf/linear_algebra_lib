@@ -26,16 +26,16 @@ matrix::matrix(const size_t rows, const size_t columns, const long double value)
 
 }
 
-long double& matrix::operator()(const size_t i, const size_t j) {
+inline long double& matrix::operator()(const size_t i, const size_t j) {
 	if (i >= n || j >= m) {
-		throw std::out_of_range("Out of range");
+		throw std::out_of_range("Error: out of range");
 	}
 	return data[i][j];
 }
 
-const long double& matrix::operator()(const size_t i, const size_t j) const {
+inline const long double& matrix::operator()(const size_t i, const size_t j) const {
 	if (i >= n || j >= m) {
-		throw std::out_of_range("Out of range");
+		throw std::out_of_range("Error: out of range");
 	}
 	return data[i][j];
 }
@@ -116,4 +116,55 @@ void matrix::add_column(const long double value) {
 		it.push_back(value);
 	}
 	++m;
+}
+
+bool linear::is_zero(const matrix& matrix) {
+	for (size_t i = 0; i < matrix.rows(); ++i) {
+		for (size_t j = 0; j < matrix.columns(); ++j) {
+			if (matrix(i, j) != 0)
+				return false;
+		}
+	}
+	return true;
+}
+
+_NODISCARD bool linear::is_identity(const matrix& matrix) {
+	for (size_t i = 0; i < matrix.rows(); ++i) {
+		for (size_t j = 0; j < matrix.columns(); ++j) {
+			if (i == j) {
+				if (matrix(i, j) == 1)
+					continue;
+				else
+					return false;
+			}
+			else {
+				if (matrix(i, j) != 0)
+					return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool linear::is_square(const matrix& matrix) {
+	return matrix.columns() == matrix.rows();
+}
+
+bool linear::is_symmetric(const matrix& matrix) {
+	return false;
+}
+
+bool linear::operator==(const matrix& lhs, const matrix& rhs) {
+	if (lhs.rows() != rhs.rows() || lhs.columns() != rhs.columns())
+		return false;
+
+	for (size_t i = 0; i < lhs.rows(); ++i) {
+		if (lhs.get_row(i) != rhs.get_row(i))
+			return false;
+	}
+	return true;
+}
+
+bool linear::operator!=(const matrix& lhs, const matrix& rhs) {
+	return !(lhs == rhs);
 }

@@ -11,6 +11,7 @@
 #include <variant>
 #include <stack>
 #include <regex>
+#include <ctime>
 
 
 const static std::string valid_characters_in_name = { "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" };
@@ -740,6 +741,11 @@ int main()
 
 	//to create complex: variable_name = complex(real_part, imaginary_part)
 	//example: c = complex(100, 3.2)
-	new_cycle();
+	//new_cycle();
+	using namespace linear;
+	matrix m1(2,2);	
+	
+	is_identity(m1);
+	int a = 2;
 	return 0;
 }
