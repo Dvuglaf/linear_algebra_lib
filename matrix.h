@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <exception>
+#include "vector.h"
 namespace linear {
 
 	class matrix {
@@ -33,16 +34,19 @@ namespace linear {
 
 	};
 	matrix transpose(const matrix&);
+	matrix transpose(const linear::vector&);
 
 	std::ostream& operator<<(std::ostream&, const matrix&);
 	matrix operator*(const matrix&, const matrix&);
 	matrix operator+(const matrix&, const matrix&);
 
-	bool operator==(const matrix&, const matrix&);
-	bool operator!=(const matrix&, const matrix&);
+	[[nodiscard]] bool operator==(const matrix&, const matrix&);
+	[[nodiscard]] bool operator!=(const matrix&, const matrix&);
 
-	bool is_zero(const matrix&);
-	bool is_identity(const matrix&);
-	bool is_square(const matrix&);
-	bool is_symmetric(const matrix&);
+	[[nodiscard]] bool is_zero(const matrix&);
+	[[nodiscard]] bool is_identity(const matrix&);
+	[[nodiscard]] bool is_square(const matrix&);
+	[[nodiscard]] bool is_symmetric(const matrix&);
+	[[nodiscard]] bool is_colon(const matrix&);
+	[[nodiscard]] bool is_row(const matrix&);
 }

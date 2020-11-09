@@ -10,6 +10,7 @@ namespace linear {
 		vector(const std::initializer_list<long double>&);
 		vector& operator=(const std::initializer_list<long double>&);
 		size_t size() const noexcept;
+		std::vector <long double> get_data() const noexcept;
 		long double& operator[](const size_t);
 		const long double& operator[](const size_t) const;
 		void push_back(const long double value, const size_t = 1);
@@ -37,4 +38,10 @@ namespace linear {
 
 	vector operator/(const vector&, const long double);
 	vector operator/(const long double, const vector&);
+
+	[[nodiscard]] bool operator==(const vector&, const vector&);
+	[[nodiscard]] bool operator!=(const vector&, const vector&);
+
+
+
 }

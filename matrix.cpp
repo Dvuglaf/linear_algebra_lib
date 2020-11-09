@@ -95,15 +95,22 @@ matrix linear::operator*(const matrix& lhs, const matrix& rhs) {
 
 }
 
-matrix linear::transpose(const matrix& lhs) {
-	matrix temp(lhs.columns(), lhs.rows());
-	for (size_t i = 0; i < lhs.rows(); ++i) {
-		for (size_t j = 0; j < lhs.columns(); ++j) {
-			temp(j, i) = lhs(i, j);
+matrix linear::transpose(const matrix& mat) {
+	matrix temp(mat.columns(), mat.rows());
+	for (size_t i = 0; i < mat.rows(); ++i) {
+		for (size_t j = 0; j < mat.columns(); ++j) {
+			temp(j, i) = mat(i, j);
 		}
 	}
 	return std::move(temp);
+}
 
+matrix linear::transpose(const vector& vec) {
+	matrix temp(vec.size(), 1);
+	for (size_t i = 0; i < vec.size(); ++i) {
+		temp(i, 1) = vec[i];
+	}
+	return std::move(temp);
 }
 
 void matrix::add_row(const long double value) {
@@ -128,7 +135,7 @@ bool linear::is_zero(const matrix& matrix) {
 	return true;
 }
 
-_NODISCARD bool linear::is_identity(const matrix& matrix) {
+[[nodiscard]] bool linear::is_identity(const matrix& matrix) {
 	for (size_t i = 0; i < matrix.rows(); ++i) {
 		for (size_t j = 0; j < matrix.columns(); ++j) {
 			if (i == j) {
@@ -146,15 +153,24 @@ _NODISCARD bool linear::is_identity(const matrix& matrix) {
 	return true;
 }
 
-bool linear::is_square(const matrix& matrix) {
+[[nodiscard]] bool linear::is_square(const matrix& matrix) {
 	return matrix.columns() == matrix.rows();
 }
 
-bool linear::is_symmetric(const matrix& matrix) {
-	return false;
+[[nodiscard]] bool linear::is_symmetric(const matrix& matrix) {
+	return matrix == transpose(matrix);
 }
 
-bool linear::operator==(const matrix& lhs, const matrix& rhs) {
+[[nodiscard]] bool linear::is_colon(const matrix& matrix) {
+	return matrix.columns() == 1;
+}
+
+[[nodiscard]] bool linear::is_row(const matrix& matrix) {
+	return matrix.rows() == 1;
+}
+
+
+[[nodiscard]] bool linear::operator==(const matrix& lhs, const matrix& rhs) {
 	if (lhs.rows() != rhs.rows() || lhs.columns() != rhs.columns())
 		return false;
 
@@ -165,6 +181,6 @@ bool linear::operator==(const matrix& lhs, const matrix& rhs) {
 	return true;
 }
 
-bool linear::operator!=(const matrix& lhs, const matrix& rhs) {
+[[nodiscard]] bool linear::operator!=(const matrix& lhs, const matrix& rhs) {
 	return !(lhs == rhs);
 }

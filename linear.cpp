@@ -19,6 +19,11 @@ const static std::string valid_operations = { "+-*/" };
 const static std::string valid_characters_in_scalar = { "1234567890." };
 static std::unordered_map<std::string, std::variant<linear::complex, linear::vector, linear::matrix, long double>> map;
 
+struct user_enter {
+	std::string expression;
+	std::string function;
+};
+
 bool valid_name(const std::string& name) {
 	for (auto& symbol : name) {
 		if (valid_characters_in_name.find(symbol) == std::string::npos)
@@ -73,7 +78,7 @@ void count(std::stack<char>& t, std::stack<std::variant<linear::complex, linear:
 				e.push(std::get<linear::complex>(first) + std::get<long double>(second));
 			}
 			else
-				throw std::string("Different types!");
+				throw std::invalid_argument("Error: no operator found for the given operand action!");
 
 		}
 		else if (first.index() == 1) {
@@ -85,7 +90,7 @@ void count(std::stack<char>& t, std::stack<std::variant<linear::complex, linear:
 	//			e.push(result);
 			}
 			else 
-				throw std::string("Different types!");
+				throw std::invalid_argument("Error: no operator found for the given operand action!");
 		}
 		else if (first.index() == 2) {
 			if (second.index() == 2) {
@@ -95,7 +100,7 @@ void count(std::stack<char>& t, std::stack<std::variant<linear::complex, linear:
 
 			}
 			else
-				throw std::string("Different types!");
+				throw std::invalid_argument("Error: no operator found for the given operand action!");
 		}
 		else if (first.index() == 3) {
 			if (second.index() == 0) {
@@ -123,7 +128,7 @@ void count(std::stack<char>& t, std::stack<std::variant<linear::complex, linear:
 				e.push(std::get<linear::complex>(second) - std::get<long double>(first));
 			}
 			else
-				throw std::string("Different types!");
+				throw std::invalid_argument("Error: no operator found for the given operand action!");
 
 		}
 		else if (first.index() == 1) {
@@ -135,7 +140,7 @@ void count(std::stack<char>& t, std::stack<std::variant<linear::complex, linear:
 				//e.push(result);
 			}
 			else
-				throw std::string("Different types!");
+				throw std::invalid_argument("Error: no operator found for the given operand action!");
 		}
 		else if (first.index() == 2) {
 			if (second.index() == 2) {
@@ -146,7 +151,7 @@ void count(std::stack<char>& t, std::stack<std::variant<linear::complex, linear:
 
 			}
 			else
-				throw std::string("Different types!");
+				throw std::invalid_argument("Error: no operator found for the given operand action!");
 		}
 		else if (first.index() == 3) {
 			if (second.index() == 0) {
@@ -173,7 +178,7 @@ void count(std::stack<char>& t, std::stack<std::variant<linear::complex, linear:
 				e.push(std::get<linear::complex>(first)* std::get<long double>(second));
 			}
 			else
-				throw std::string("Different types!");
+				throw std::invalid_argument("Error: no operator found for the given operand action!");
 
 		}
 		else if (first.index() == 1) {
@@ -185,7 +190,7 @@ void count(std::stack<char>& t, std::stack<std::variant<linear::complex, linear:
 				e.push(std::get<linear::vector>(first)* std::get<long double>(second));
 			}
 			else
-				throw std::string("Different types!");
+				throw std::invalid_argument("Error: no operator found for the given operand action!");
 		}
 		else if (first.index() == 2) {
 			if (second.index() == 2) {
@@ -195,7 +200,7 @@ void count(std::stack<char>& t, std::stack<std::variant<linear::complex, linear:
 
 			}
 			else
-				throw std::string("Different types!");
+				throw std::invalid_argument("Error: no operator found for the given operand action!");
 		}
 		else if (first.index() == 3) {
 			if (second.index() == 0) {
@@ -221,7 +226,7 @@ void count(std::stack<char>& t, std::stack<std::variant<linear::complex, linear:
 				e.push(std::get<linear::complex>(second) / std::get<long double>(first));
 			}
 			else
-				throw std::string("Different types!");
+				throw std::invalid_argument("Error: no operator found for the given operand action!");
 
 		}
 		else if (first.index() == 1) {
@@ -232,7 +237,7 @@ void count(std::stack<char>& t, std::stack<std::variant<linear::complex, linear:
 				e.push(std::get<long double>(second) / std::get<linear::vector>(first));
 			}
 			else
-				throw std::string("Different types!");
+				throw std::invalid_argument("Error: no operator found for the given operand action!");
 		}
 		else if (first.index() == 2) {
 			if (second.index() == 2) {
@@ -243,7 +248,7 @@ void count(std::stack<char>& t, std::stack<std::variant<linear::complex, linear:
 
 			}
 			else
-				throw std::string("Different types!");
+				throw std::invalid_argument("Error: no operator found for the given operand action!");
 		}
 		else if (first.index() == 3) {
 			if (second.index() == 0) {
@@ -302,10 +307,10 @@ std::variant<linear::complex, linear::vector, linear::matrix, long double> zamel
 				symbol = expression[i];
 			}
 			if (symbol != '+' && symbol != '-' && symbol != '*' && symbol != '/' && symbol != ')' && symbol != ' ')
-				throw std::string("Error: incorrect expression!");
+				throw std::logic_error("Error: incorrect expression!");
 			
 			if (!exist_name_in_map(name))
-				throw std::string("Error: unknown name!");
+				throw std::invalid_argument("Error: unknown name!");
 
 			e.push(map[name]);
 			continue;
@@ -344,7 +349,7 @@ std::variant<linear::complex, linear::vector, linear::matrix, long double> zamel
 			t.push(symbol);
 		else if (symbol == ')') {
 			if (t.top() == '$')
-				throw std::string("Error!");
+				throw std::logic_error("Error: wrong expression!");
 			else if (t.top() == '(')
 				t.pop();
 			else if (t.top() == '+' || t.top() == '-' || t.top() == '*' || t.top() == '/') {
@@ -355,7 +360,7 @@ std::variant<linear::complex, linear::vector, linear::matrix, long double> zamel
 		}
 		else if (symbol == '$') {
 			if (t.top() == '(')
-				throw std::string("Error!");
+				throw std::logic_error("Error: wrong expression!");
 			else if (t.top() == '+' || t.top() == '-' || t.top() == '*' || t.top() == '/') {//4
 				count(t, e, ' ');
 				prev = symbol;
@@ -370,7 +375,7 @@ std::variant<linear::complex, linear::vector, linear::matrix, long double> zamel
 			continue;
 		}
 		else if (valid_operations.find(symbol) == std::string::npos) 
-			throw std::string("Unknown operation!");
+			throw std::logic_error("Error: unknown operation!");
 		++i;
 		prev = symbol;
 	}
@@ -425,7 +430,7 @@ std::string function_name(const std::string& expression) {
 			result = it;
 		}
 		if (number_of_substring_in_string(expression, it) > 1) {
-			throw std::string("Error: more than one function!");
+			throw std::logic_error("Error: more than one function!");
 		}
 	}
 	return result != "" ? result : "none";
@@ -442,7 +447,7 @@ bool create_complex_function(const std::string& func) {
 
 void cout_value(const std::string& name) {
 	if (!exist_name_in_map(name)) {
-		throw std::string("Error: this name does not exist!");
+		throw std::logic_error("Error: this name does not exist!");
 	}
 	if (map[name].index() == 0) {
 		std::cout << std::endl << " " << std::get<linear::complex>(map[name]) << std::endl;
@@ -486,14 +491,14 @@ bool check_enter(const std::string& user_enter) {
 void check_error(const std::string& user_enter) {
 	size_t equality_count = number_of_substring_in_string(user_enter, "=");
 	if (equality_count > 1) {
-		throw std::string("Error: too many assignments!");
+		throw std::logic_error("Error: too many assignments!");
 	}
 	auto vector = split(user_enter, "=");
 	std::string expression = user_enter;
 	if (equality_count == 1) {//оператор равно.
 		expression = vector[1];
 		if (!valid_name(vector[0] = std::regex_replace(vector[0], std::regex("\s+\s(?!\s)"), "")))//поменять логику
-			throw std::string("Error: incorrect name!");
+			throw std::logic_error("Error: wrong name!");
 	}
 	else {
 		//
@@ -503,9 +508,9 @@ void check_error(const std::string& user_enter) {
 		auto left = expression.find('(');
 		auto right = expression.find_last_of(')');
 		if (left == std::string::npos || right == std::string::npos)
-			throw std::string("Error: wrong syntax!");
+			throw std::logic_error("Error: wrong syntax!");
 		if ((left != function.size() + number_of_space(expression, 0, left)) || right != expression.size() - number_of_space(expression, right, expression.size()) - 1) {
-			throw std::string("Error: wrong syntax!");
+			throw std::logic_error("Error: wrong syntax!");
 		}
 		auto coma_count = number_of_substring_in_string(expression, ",");
 		if (coma_count > 1) {
@@ -513,7 +518,7 @@ void check_error(const std::string& user_enter) {
 		}
 		else if (coma_count == 0) {
 			if (function == "complex" || function == "pow")
-				throw std::string("Error: few parametres in function " + function);
+				throw std::logic_error("Error: few parametres in function " + function);
 		}
 	}
 }
@@ -570,7 +575,7 @@ linear::vector vector_help(const std::string& expression) {
 		}
 	}
 	catch (...) {
-		throw std::string("Error: incorrect expression!");
+		throw std::logic_error("Error: wrong expression!");
 	}
 	return vector;
 }
@@ -578,14 +583,14 @@ linear::vector vector_help(const std::string& expression) {
 linear::vector create_vector(const std::vector<std::string> splitted_expression) {
 	linear::vector result(0);
 	if (splitted_expression.size() > 3) {
-		throw std::string("Error: too many comas!");
+		throw std::logic_error("Error: too many comas!");
 	}
 	auto start = std::stold(splitted_expression[0]);
 	auto stop = std::stold(splitted_expression[1]);
 	auto step = std::stold(splitted_expression[2]);
 	if (start < stop) {
 		if (step <= 0) {
-			throw std::string("Error: step has negative value!");
+			throw std::invalid_argument("Error: step has negative value!");
 		}
 
 		for (auto i = start; i < stop; i += step) {
@@ -594,7 +599,7 @@ linear::vector create_vector(const std::vector<std::string> splitted_expression)
 	}
 	else if (start > stop) {
 		if (step >= 0) {
-			throw std::string("Error: step has positive value!");
+			throw std::invalid_argument("Error: step has positive value!");
 		}
 		for (auto i = start; i > stop; i += step) {
 			result.push_back(i);
@@ -632,10 +637,10 @@ std::variant < linear::complex, linear::vector, linear::matrix, long double> exe
 				}
 			}
 			catch (...) {
-				throw std::string("Error: invalid expression!");
+				throw std::logic_error("Error: wrong expression!");
 			}
 			if (right != "none") {
-				throw std::string("Error: too many parameters in function!");
+				throw std::logic_error("Error: too many parameters in function!");
 			}
 			z = std::get<linear::complex>(map[left]);
 			if (function_name == "conj") {

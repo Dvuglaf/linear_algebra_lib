@@ -36,6 +36,10 @@ size_t vector::size() const noexcept {
 	return data.size();
 }
 
+std::vector<long double> vector::get_data() const noexcept {
+	return data;
+}
+
 long double& vector::operator[](const size_t i) {
 	return data[i];
 }
@@ -64,7 +68,7 @@ std::ostream& linear::operator<<(std::ostream& out, const vector& vec) {
 
 vector& vector::operator+=(const vector& rhs) {
 	if (data.size() != rhs.data.size())
-		throw std::invalid_argument("Different dimensions!");
+		throw std::invalid_argument("Error: different dimensions!");
 	for (size_t i = 0; i < data.size(); ++i) {
 		data[i] += rhs.data[i];
 	}
@@ -73,7 +77,7 @@ vector& vector::operator+=(const vector& rhs) {
 
 vector& vector::operator-=(const vector& rhs) {
 	if (data.size() != rhs.data.size())
-		throw std::invalid_argument("Different dimensions!");
+		throw std::invalid_argument("Error: different dimensions!");
 	for (size_t i = 0; i < data.size(); ++i) {
 		data[i] -= rhs.data[i];
 	}
@@ -97,7 +101,7 @@ vector& vector::operator/=(const long double rhs) {
 
 long double vector::scalar(const vector& rhs) {
 	if (data.size() != rhs.data.size())
-		throw std::invalid_argument("Different dimensions!");
+		throw std::invalid_argument("Error: different dimensions!");
 	long double result = 0;
 	for (size_t i = 0; i < data.size(); ++i) {
 		result += data[i] * rhs.data[i];
@@ -140,4 +144,12 @@ vector linear::operator/(const long double lhs, const vector& rhs) {
 	vector result(rhs);
 	result /= lhs;
 	return result;
+}
+
+[[nodiscard]] bool linear::operator==(const vector& lhs, const vector& rhs) {
+	return lhs.get_data() == rhs.get_data();
+}
+
+[[nodiscard]] bool linear::operator!=(const vector& lhs, const vector& rhs) {
+	return !(lhs == rhs);
 }
