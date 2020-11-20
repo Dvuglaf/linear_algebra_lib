@@ -82,6 +82,13 @@ build CMakeFiles\linear.dir\vector.cpp.obj: CXX_COMPILER__linear_Debug ..\..\..\
   TARGET_COMPILE_PDB = CMakeFiles\linear.dir\
   TARGET_PDB = linear.pdb
 
+build CMakeFiles\linear.dir\console.cpp.obj: CXX_COMPILER__linear_Debug ..\..\..\console.cpp || cmake_object_order_depends_target_linear_Debug
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1   /W4 /D_CRT_SECURE_NO_WARNINGS -std:c++17
+  OBJECT_DIR = CMakeFiles\linear.dir
+  OBJECT_FILE_DIR = CMakeFiles\linear.dir
+  TARGET_COMPILE_PDB = CMakeFiles\linear.dir\
+  TARGET_PDB = linear.pdb
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target linear
@@ -90,7 +97,7 @@ build CMakeFiles\linear.dir\vector.cpp.obj: CXX_COMPILER__linear_Debug ..\..\..\
 #############################################
 # Link the executable linear.exe
 
-build linear.exe: CXX_EXECUTABLE_LINKER__linear_Debug CMakeFiles\linear.dir\linear.cpp.obj CMakeFiles\linear.dir\matrix.cpp.obj CMakeFiles\linear.dir\complex.cpp.obj CMakeFiles\linear.dir\vector.cpp.obj
+build linear.exe: CXX_EXECUTABLE_LINKER__linear_Debug CMakeFiles\linear.dir\linear.cpp.obj CMakeFiles\linear.dir\matrix.cpp.obj CMakeFiles\linear.dir\complex.cpp.obj CMakeFiles\linear.dir\vector.cpp.obj CMakeFiles\linear.dir\console.cpp.obj
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
   LINK_LIBRARIES = kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib

@@ -42,6 +42,8 @@ namespace linear {
 	[[nodiscard]] bool operator==(const vector&, const vector&);
 	[[nodiscard]] bool operator!=(const vector&, const vector&);
 
+	long double scalar(const vector&, const vector&);
+
 
 
 }

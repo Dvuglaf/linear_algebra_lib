@@ -3,7 +3,7 @@
 namespace linear {
 	class complex {
 	public:
-		complex();
+		complex() = default;
 		complex(long  double, long double);
 		complex(const complex&);
 		complex(complex&&) noexcept;
@@ -26,8 +26,8 @@ namespace linear {
 
 
 	private:
-		long double re;
-		long double im;
+		long double re = 0.l;
+		long double im = 0.l;
 	};
 	std::ostream& operator<<(std::ostream& out, const complex& matrix);
 

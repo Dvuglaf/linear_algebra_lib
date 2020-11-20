@@ -99,12 +99,12 @@ vector& vector::operator/=(const long double rhs) {
 	return *this;
 }
 
-long double vector::scalar(const vector& rhs) {
-	if (data.size() != rhs.data.size())
+long double linear::scalar(const vector& lhs, const vector& rhs) {
+	if (lhs.size() != rhs.size())
 		throw std::invalid_argument("Error: different dimensions!");
 	long double result = 0;
-	for (size_t i = 0; i < data.size(); ++i) {
-		result += data[i] * rhs.data[i];
+	for (size_t i = 0; i < lhs.size(); ++i) {
+		result += lhs[i] * rhs[i];
 	}
 	return result;
 }

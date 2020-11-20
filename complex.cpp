@@ -4,8 +4,6 @@
 
 typedef linear::complex complex;
 
-complex::complex() :re(0), im(0) { ; }
-
 complex::complex(long double real, long double imaginary) :re(real), im(imaginary) { ; }
 
 complex::complex(const complex& rhs) : re(rhs.re), im(rhs.im) { ; }

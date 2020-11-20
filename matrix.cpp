@@ -18,6 +18,8 @@ matrix linear::operator+(const matrix& lhs, const matrix& rhs) {
 	return result;
 }
 
+
+
 matrix::matrix(const size_t rows, const size_t columns, const long double value) {
 	n = rows;
 	m = columns;
@@ -68,6 +70,18 @@ matrix& matrix::operator+=(const matrix& rhs) {
 	return *this;
 }
 
+matrix& matrix::operator-=(const matrix& rhs) {
+	if (n != rhs.rows() || m != rhs.columns()) {
+		throw std::invalid_argument("Different dimensions of matrix");
+	}
+	for (size_t i = 0; i < n; ++i) {
+		for (size_t j = 0; j < m; ++j) {
+			(*this)(i, j) -= rhs(i, j);
+		}
+	}
+	return *this;
+}
+
 
 matrix& matrix::operator*=(const long double value) {
 	for (size_t i = 0; i < n; ++i) {
@@ -76,6 +90,33 @@ matrix& matrix::operator*=(const long double value) {
 		}
 	}
 	return *this;
+}
+
+matrix& matrix::operator/=(const long double value) {
+	for (size_t i = 0; i < n; ++i) {
+		for (size_t j = 0; j < m; ++j) {
+			(*this)(i, j) /= value;
+		}
+	}
+	return *this;
+}
+
+matrix linear::operator-(const matrix& lhs, const matrix& rhs) {
+	matrix temp(lhs);
+	temp -= rhs;
+	return temp;
+}
+
+matrix linear::operator*(const matrix& lhs, const long double rhs) {
+	matrix temp(lhs);
+	temp *= rhs;
+	return temp;
+}
+
+matrix linear::operator*(const long double lhs, const matrix& rhs) {
+	matrix temp(rhs);
+	temp *= lhs;
+	return temp;
 }
 
 matrix linear::operator*(const matrix& lhs, const matrix& rhs) {
@@ -92,6 +133,42 @@ matrix linear::operator*(const matrix& lhs, const matrix& rhs) {
 		}
 	}
 	return std::move(result);
+}
+
+matrix linear::operator*(const matrix& lhs, const vector& rhs){
+	if (!is_colon(lhs)) {
+		throw std::invalid_argument("Error: first argument must be colon vector!");
+	}
+	matrix result(lhs.rows(), rhs.size());
+	for (size_t i = 0; i < lhs.columns(); ++i) {
+		for (size_t j = 0; j < rhs.size(); ++j) {
+			for (size_t k = 0; k < lhs.columns(); ++k) {
+				result(i, j) += lhs(i, k) * rhs[k];
+			}
+		}
+	}
+	return std::move(result);
+}
+
+matrix linear::operator*(const vector& lhs, const matrix& rhs) {
+	if (lhs.size() != rhs.rows()) {
+		throw std::invalid_argument("Error: first argument must be colon vector!");
+	}
+	matrix result(lhs.size(), rhs.columns());
+	for (size_t i = 0; i < lhs.size(); ++i) {
+		for (size_t j = 0; j < rhs.columns(); ++j) {
+			for (size_t k = 0; k < lhs.size(); ++k) {
+				result(i, j) += lhs[k] * rhs(k, j);
+			}
+		}
+	}
+	return std::move(result);
+}
+
+matrix linear::operator/(const matrix& lhs, const long double rhs) {
+	matrix temp(lhs);
+	temp /= rhs;
+	return temp;
 
 }
 
@@ -115,6 +192,11 @@ matrix linear::transpose(const vector& vec) {
 
 void matrix::add_row(const long double value) {
 	data.push_back(std::vector<long double>(m, value));
+	++n;
+}
+
+void matrix::add_row(const vector& vector) {
+	data.push_back(vector.get_data());
 	++n;
 }
 
@@ -183,4 +265,14 @@ bool linear::is_zero(const matrix& matrix) {
 
 [[nodiscard]] bool linear::operator!=(const matrix& lhs, const matrix& rhs) {
 	return !(lhs == rhs);
+}
+
+void linear::test(matrix& out, const matrix& lhs, const matrix& rhs) {
+	for (size_t i = 0; i < lhs.rows(); ++i) {
+		for (size_t j = 0; j < rhs.columns(); ++j) {
+			for (size_t k = 0; k < lhs.columns(); ++k) {
+				out(i, j) += lhs(i,k) * rhs(k, j);
+			}
+		}
+	}
 }

@@ -18,10 +18,14 @@ namespace linear {
 		size_t size() const noexcept;
 
 		matrix& operator+=(const matrix&);
+		matrix& operator-=(const matrix&);
 
 		matrix& operator*=(long double);
+		matrix& operator/=(long double);
+
 
 		void add_row(long double value);
+		void add_row(const vector&);
 		void add_column(long double value);
 
 
@@ -37,8 +41,19 @@ namespace linear {
 	matrix transpose(const linear::vector&);
 
 	std::ostream& operator<<(std::ostream&, const matrix&);
-	matrix operator*(const matrix&, const matrix&);
+
 	matrix operator+(const matrix&, const matrix&);
+
+	matrix operator-(const matrix&, const matrix&);
+
+	matrix operator*(const matrix&, long double);
+	matrix operator*(long double, const matrix&);
+	matrix operator*(const matrix&, const matrix&);
+	matrix operator*(const matrix&, const vector&);
+	matrix operator*(const vector&, const matrix&);
+	void test(matrix&, const matrix&, const matrix&);
+
+	matrix operator/(const matrix&, long double);
 
 	[[nodiscard]] bool operator==(const matrix&, const matrix&);
 	[[nodiscard]] bool operator!=(const matrix&, const matrix&);
