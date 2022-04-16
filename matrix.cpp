@@ -132,7 +132,7 @@ matrix linear::operator*(const matrix& lhs, const matrix& rhs) {
 			}
 		}
 	}
-	return std::move(result);
+	return result;
 }
 
 matrix linear::operator*(const matrix& lhs, const vector& rhs){
@@ -147,7 +147,7 @@ matrix linear::operator*(const matrix& lhs, const vector& rhs){
 			}
 		}
 	}
-	return std::move(result);
+	return result;
 }
 
 matrix linear::operator*(const vector& lhs, const matrix& rhs) {
@@ -162,7 +162,7 @@ matrix linear::operator*(const vector& lhs, const matrix& rhs) {
 			}
 		}
 	}
-	return std::move(result);
+	return result;
 }
 
 matrix linear::operator/(const matrix& lhs, const long double rhs) {
@@ -179,7 +179,7 @@ matrix linear::transpose(const matrix& mat) {
 			temp(j, i) = mat(i, j);
 		}
 	}
-	return std::move(temp);
+	return temp;
 }
 
 matrix linear::transpose(const vector& vec) {
@@ -187,7 +187,7 @@ matrix linear::transpose(const vector& vec) {
 	for (size_t i = 0; i < vec.size(); ++i) {
 		temp(i, 1) = vec[i];
 	}
-	return std::move(temp);
+	return temp;
 }
 
 void matrix::add_row(const long double value) {
