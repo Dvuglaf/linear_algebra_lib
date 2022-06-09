@@ -51,7 +51,6 @@ namespace linear {
 	matrix operator*(const matrix&, const matrix&);
 	matrix operator*(const matrix&, const vector&);
 	matrix operator*(const vector&, const matrix&);
-	void test(matrix&, const matrix&, const matrix&);
 
 	matrix operator/(const matrix&, long double);
 
