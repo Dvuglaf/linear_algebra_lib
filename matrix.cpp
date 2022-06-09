@@ -267,12 +267,3 @@ bool linear::is_zero(const matrix& matrix) {
 	return !(lhs == rhs);
 }
 
-void linear::test(matrix& out, const matrix& lhs, const matrix& rhs) {
-	for (size_t i = 0; i < lhs.rows(); ++i) {
-		for (size_t j = 0; j < rhs.columns(); ++j) {
-			for (size_t k = 0; k < lhs.columns(); ++k) {
-				out(i, j) += lhs(i,k) * rhs(k, j);
-			}
-		}
-	}
-}
